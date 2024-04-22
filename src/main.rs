@@ -23,3 +23,25 @@ fn largest(list: &[i32]) -> &i32 {
 
     largest_number
 }
+fn largest_char(list: &[char]) -> &char {
+    let mut largest_char = &list[0];
+
+    for i in list {
+        if i > largest_char {
+            largest_char = i
+        }
+    }
+    largest_char
+}
+
+fn largest_generic<T : std::cmp::PartialOrd>(list: &[T]) -> &T {
+    let mut largest = &list[0];
+
+    for i in list {
+        if i > largest {
+            largest = i
+        }
+    }
+
+    largest
+}

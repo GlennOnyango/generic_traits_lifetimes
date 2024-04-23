@@ -1,47 +1,52 @@
-fn main() {
-    let number_list = vec![21, 23, 12, 52, 6, 3, 723, 53];
+mod aggregator;
 
-    let largest_number = largest_generic(&number_list);
+use std::collections::btree_map::IterMut;
 
-    println!("The largest number is {}", largest_number);
+use aggregator::{summerize, NewsArticle};
 
-    let number_list = vec![21, 23, 12, 52, 6, 3, 8, 80, 53];
+//local struct
 
-    let largest_number = largest_generic(&number_list);
-
-    println!("The largest number is {}", largest_number);
+struct Tweet {
+    news_feed: String,
+    retweet: bool,
+    new_tweet: bool,
+    reply: bool,
 }
 
-// fn largest(list: &[i32]) -> &i32 {
-//     let mut largest_number = &list[0];
+impl summerize for Tweet {
+    fn summerize_author(&self) -> String {
+        format!("@{}", self.news_feed)
+    }
+}
 
-//     for i in list {
-//         if i > largest_number {
-//             largest_number = i
-//         }
-//     }
+struct Races {
+    color: String,
+}
 
-//     largest_number
-// }
-// fn largest_char(list: &[char]) -> &char {
-//     let mut largest_char = &list[0];
+fn main() {
+    let news = NewsArticle {
+        headline: String::from("Money grabbed"),
+        location: String::from("Nairobi"),
+        author: String::from("Glenn Tedd"),
+        content: String::from(
+            "asdasdsd asdasdqwvolhfa  iohqhbkb q oliwn qwy  lfnuobqwg flqbqqffpfhq",
+        ),
+    };
 
-//     for i in list {
-//         if i > largest_char {
-//             largest_char = i
-//         }
-//     }
-//     largest_char
-// }
+    println!("News summarry {}", news.summary());
 
-fn largest_generic<T : std::cmp::PartialOrd>(list: &[T]) -> &T {
-    let mut largest = &list[0];
+    let tweet = Tweet {
+        news_feed: String::from("People are fighting over tattoos"),
+        retweet: false,
+        new_tweet: true,
+        reply: false,
+    };
 
-    for i in list {
-        if i > largest {
-            largest = i
-        }
+    println!("{}", tweet.summary());
+
+    fn notify(item: &impl summerize) {
+        println!("Breaking news {}", item.summary());
     }
 
-    largest
+    notify(&news);
 }
